@@ -9,6 +9,10 @@ Page({
     this.fetchCategories();
     this.fetchDishes();
   },
+  onShow() {
+    // 页面显示时重新获取菜品列表，确保添加菜品后能看到最新数据
+    this.fetchDishes();
+  },
   switchTab(e) {
     const tab = e.currentTarget.dataset.tab;
     this.setData({
@@ -16,8 +20,9 @@ Page({
     });
   },
   fetchCategories() {
+    const app = getApp();
     wx.request({
-      url: 'http://10.168.5.20:5000/api/categories',
+      url: app.globalData.baseUrl + '/categories',
       success: (res) => {
         this.setData({
           categories: res.data
@@ -29,8 +34,9 @@ Page({
     });
   },
   fetchDishes() {
+    const app = getApp();
     wx.request({
-      url: 'http://10.168.5.20:5000/api/dishes',
+      url: app.globalData.baseUrl + '/dishes',
       success: (res) => {
         this.setData({
           dishes: res.data
@@ -59,8 +65,9 @@ Page({
     // 获取token
     const token = wx.getStorageSync('token');
     
+    const app = getApp();
     wx.request({
-      url: 'http://10.168.5.20:5000/api/categories',
+      url: app.globalData.baseUrl + '/categories',
       method: 'POST',
       header: {
         'Authorization': token
@@ -100,8 +107,9 @@ Page({
             // 获取token
             const token = wx.getStorageSync('token');
             
+            const app = getApp();
             wx.request({
-              url: `http://10.168.5.20:5000/api/categories/${id}`,
+              url: `${app.globalData.baseUrl}/categories/${id}`,
               method: 'PUT',
               header: {
                 'Authorization': token
@@ -138,8 +146,9 @@ Page({
           // 获取token
           const token = wx.getStorageSync('token');
           
+          const app = getApp();
           wx.request({
-            url: `http://10.168.5.20:5000/api/categories/${id}`,
+            url: `${app.globalData.baseUrl}/categories/${id}`,
             method: 'DELETE',
             header: {
               'Authorization': token
@@ -185,8 +194,9 @@ Page({
       content: '确定要删除这个菜品吗？',
       success: (res) => {
         if (res.confirm) {
+          const app = getApp();
           wx.request({
-            url: `http://10.168.5.20:5000/api/dishes/${id}`,
+            url: `${app.globalData.baseUrl}/dishes/${id}`,
             method: 'DELETE',
             success: (res) => {
               wx.showToast({

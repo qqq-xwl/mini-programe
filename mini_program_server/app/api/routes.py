@@ -66,6 +66,11 @@ def add_category():
     if not name:
         return jsonify({'error': '分类名称不能为空'}), 400
     
+    # 检查分类名称是否已存在
+    existing_category = Category.query.filter_by(name=name).first()
+    if existing_category:
+        return jsonify({'error': '分类名称已存在'}), 400
+    
     category = Category(name=name)
     db.session.add(category)
     db.session.commit()

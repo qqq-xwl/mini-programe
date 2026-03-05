@@ -12,8 +12,9 @@ Page({
     this.fetchCategories();
   },
   fetchCategories() {
+    const app = getApp();
     wx.request({
-      url: 'http://10.168.5.20:5000/api/categories',
+      url: app.globalData.baseUrl + '/categories',
       success: (res) => {
         this.setData({
           categories: res.data
@@ -93,8 +94,9 @@ Page({
     const token = wx.getStorageSync('token');
     
     // 提交菜品
+    const app = getApp();
     wx.request({
-      url: 'http://10.168.5.20:5000/api/dishes',
+      url: app.globalData.baseUrl + '/dishes',
       method: 'POST',
       header: {
         'Authorization': token

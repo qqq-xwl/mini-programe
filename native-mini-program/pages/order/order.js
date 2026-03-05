@@ -26,8 +26,9 @@ Page({
     };
     
     // 调用后端API提交订单
+    const app = getApp();
     wx.request({
-      url: 'http://10.168.5.20:5000/api/orders',
+      url: app.globalData.baseUrl + '/orders',
       method: 'POST',
       data: orderData,
       success: (res) => {

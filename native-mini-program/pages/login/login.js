@@ -14,8 +14,10 @@ Page({
       const nickname = this.data.selectedRole === 'customer' ? '顾客用户' : '商家用户';
       const role = this.data.selectedRole;
       
+      // 获取app实例
+      const app = getApp();
       wx.request({
-        url: 'http://10.168.5.20:5000/api/login',
+        url: app.globalData.baseUrl + '/login',
         method: 'POST',
         header: {
           'Content-Type': 'application/json'

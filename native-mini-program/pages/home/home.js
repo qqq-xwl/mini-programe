@@ -8,8 +8,9 @@ Page({
     this.fetchRecommendedDishes();
   },
   fetchCategories() {
+    const app = getApp();
     wx.request({
-      url: 'http://10.168.5.20:5000/api/categories',
+      url: app.globalData.baseUrl + '/categories',
       success: (res) => {
         this.setData({
           categories: res.data
@@ -21,8 +22,9 @@ Page({
     });
   },
   fetchRecommendedDishes() {
+    const app = getApp();
     wx.request({
-      url: 'http://10.168.5.20:5000/api/dishes',
+      url: app.globalData.baseUrl + '/dishes',
       success: (res) => {
         // 随机选择4个菜品作为推荐
         const dishes = res.data.sort(() => 0.5 - Math.random()).slice(0, 4);

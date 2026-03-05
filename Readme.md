@@ -123,9 +123,56 @@
    ```
 
 2. **安装依赖**：
-   ```bash
-   pip3 install -r requirements.txt
-   ```
+   - **推荐：使用虚拟环境**（避免权限问题和依赖冲突）：
+     ```bash
+     # 步骤1：更新系统和安装编译依赖
+     yum update -y
+     yum install -y gcc gcc-c++ python3-devel make python3-venv
+     
+     # 步骤2：创建虚拟环境
+     python3 -m venv venv
+     
+     # 步骤3：激活虚拟环境
+     source venv/bin/activate
+     
+     # 步骤4：升级pip
+     pip install --upgrade pip
+     
+     # 步骤5：安装项目依赖（使用国内镜像加速）
+     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+     ```
+   - **直接安装（不推荐，可能导致权限问题）**：
+     ```bash
+     # 步骤1：更新系统和安装编译依赖
+     yum update -y
+     yum install -y gcc gcc-c++ python3-devel make
+     
+     # 步骤2：升级pip
+     pip3 install --upgrade pip
+     
+     # 步骤3：安装项目依赖
+     pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+     ```
+   - **常见问题解决**：
+     - **greenlet安装失败**：
+       ```bash
+       # 方法1：强制重新编译安装
+       pip install --no-binary :all: greenlet
+       # 方法2：指定版本
+       pip install greenlet==1.1.2
+       ```
+     - **其他依赖安装失败**：
+       ```bash
+       # 逐个安装依赖
+       pip install -i https://pypi.tuna.tsinghua.edu.cn/simple Flask==2.0.1
+       pip install -i https://pypi.tuna.tsinghua.edu.cn/simple Flask-SQLAlchemy==2.5.1
+       pip install -i https://pypi.tuna.tsinghua.edu.cn/simple Flask-CORS==3.0.10
+       pip install -i https://pypi.tuna.tsinghua.edu.cn/simple PyJWT==2.1.0
+       pip install -i https://pypi.tuna.tsinghua.edu.cn/simple Werkzeug==2.0.1
+       pip install -i https://pypi.tuna.tsinghua.edu.cn/simple requests==2.26.0
+       pip install -i https://pypi.tuna.tsinghua.edu.cn/simple wechatpy==1.8.18
+       pip install -i https://pypi.tuna.tsinghua.edu.cn/simple SQLAlchemy==1.4.46
+       ```
 
 3. **配置文件修改**：
    - 编辑 `config/config.py`：
@@ -138,21 +185,55 @@
      - 数据库配置（如果使用MySQL）
 
 4. **启动服务**：
-   - 开发环境：
-     ```bash
-     python3 run.py
-     ```
-   - 生产环境（推荐）：
-     ```bash
-     pip3 install gunicorn
-     gunicorn -w 4 -b 0.0.0.0:5000 app:app --daemon
-     ```
+   - **使用虚拟环境启动**：
+     - 开发环境：
+       ```bash
+       # 激活虚拟环境
+       source venv/bin/activate
+       # 启动服务
+       python run.py
+       ```
+     - 生产环境（推荐）：
+       ```bash
+       # 激活虚拟环境
+       source venv/bin/activate
+       # 安装gunicorn
+       pip install gunicorn
+       # 启动服务
+       gunicorn -w 4 -b 0.0.0.0:5000 app:app --daemon
+       ```
+   - **直接启动（不使用虚拟环境）**：
+     - 开发环境：
+       ```bash
+       python3 run.py
+       ```
+     - 生产环境：
+       ```bash
+       pip3 install gunicorn
+       gunicorn -w 4 -b 0.0.0.0:5000 app:app --daemon
+       ```
 
 5. **配置防火墙**：
-   ```bash
-   firewall-cmd --zone=public --add-port=5000/tcp --permanent
-   firewall-cmd --reload
-   ```
+   - **步骤1：检查并启动FirewallD服务**：
+     ```bash
+     # 检查FirewallD状态
+     systemctl status firewalld
+     
+     # 启动FirewallD服务
+     systemctl start firewalld
+     
+     # 设置FirewallD开机自启
+     systemctl enable firewalld
+     ```
+   - **步骤2：添加端口规则**：
+     ```bash
+     firewall-cmd --zone=public --add-port=5000/tcp --permanent
+     firewall-cmd --reload
+     ```
+   - **步骤3：验证端口是否开放**：
+     ```bash
+     firewall-cmd --list-ports
+     ```
 
 ### 步骤4：域名配置（可选）
 1. **购买域名**：在腾讯云/阿里云购买域名
@@ -196,7 +277,16 @@
   ```
 
 ### 2. 服务重启
-- 重启Gunicorn：
+- **使用虚拟环境重启**：
+  ```bash
+  # 激活虚拟环境
+  source venv/bin/activate
+  # 停止服务
+  pkill -f gunicorn
+  # 启动服务
+  gunicorn -w 4 -b 0.0.0.0:5000 app:app --daemon
+  ```
+- **直接重启**：
   ```bash
   pkill -f gunicorn
   gunicorn -w 4 -b 0.0.0.0:5000 app:app --daemon
@@ -218,9 +308,19 @@
 ## 五、常见问题排查
 
 ### 1. 服务无法访问
-- 检查防火墙：`firewall-cmd --list-ports`
-- 检查服务状态：`ps aux | grep gunicorn`
-- 检查日志：`tail -f /var/log/gunicorn.log`
+- **检查防火墙**：
+  ```bash
+  # 检查FirewallD状态
+  systemctl status firewalld
+  
+  # 启动FirewallD服务
+  systemctl start firewalld
+  
+  # 检查端口是否开放
+  firewall-cmd --list-ports
+  ```
+- **检查服务状态**：`ps aux | grep gunicorn`
+- **检查日志**：`tail -f /var/log/gunicorn.log`
 
 ### 2. 小程序请求失败
 - 检查服务器域名配置

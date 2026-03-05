@@ -15,8 +15,9 @@ Page({
     this.fetchDishes();
   },
   fetchCategories() {
+    const app = getApp();
     wx.request({
-      url: 'http://10.168.5.20:5000/api/categories',
+      url: app.globalData.baseUrl + '/categories',
       success: (res) => {
         this.setData({
           categories: res.data
@@ -28,8 +29,9 @@ Page({
     });
   },
   fetchDishes() {
+    const app = getApp();
     const categoryId = this.data.selectedCategory;
-    let url = 'http://10.168.5.20:5000/api/dishes';
+    let url = app.globalData.baseUrl + '/dishes';
     if (categoryId > 0) {
       url += `?category_id=${categoryId}`;
     }

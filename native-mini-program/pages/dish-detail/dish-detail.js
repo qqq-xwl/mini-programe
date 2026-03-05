@@ -8,8 +8,9 @@ Page({
     this.fetchDishDetail(dishId);
   },
   fetchDishDetail(dishId) {
+    const app = getApp();
     wx.request({
-      url: `http://10.168.5.20:5000/api/dishes/${dishId}`,
+      url: `${app.globalData.baseUrl}/dishes/${dishId}`,
       success: (res) => {
         this.setData({
           dish: res.data
