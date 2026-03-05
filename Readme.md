@@ -45,22 +45,66 @@
    - 输入服务器IP、用户名（root）和密码
    - 登录服务器
 
-2. **更新系统**：
+2. **推荐的免费服务器可视化工具**：
+   - **MobaXterm**（推荐）
+     - 特点：功能强大的集成终端工具，支持SSH、VNC、RDP、FTP等多种协议，免费版足够日常使用
+     - 适用系统：Windows
+     - 下载地址：[MobaXterm官网](https://mobaxterm.mobatek.net/)
+     - 使用步骤：
+       1. 下载并安装MobaXterm
+       2. 打开软件，点击"Session" -> "SSH"
+       3. 输入服务器IP、用户名（如root），点击"OK"
+       4. 输入服务器密码，即可连接
+
+   - **FinalShell**
+     - 特点：国产免费工具，界面友好，支持SSH、SFTP、远程桌面等
+     - 适用系统：Windows、Mac、Linux
+     - 下载地址：[FinalShell官网](http://www.hostbuf.com/)
+
+   - **Windows远程桌面（RDP）**
+     - 特点：Windows系统自带，无需额外安装，适合Windows服务器
+     - 服务器配置（CentOS为例）：
+       ```bash
+       yum install -y epel-release
+       yum install -y xrdp tigervnc-server
+       systemctl start xrdp
+       systemctl enable xrdp
+       firewall-cmd --add-port=3389/tcp --permanent
+       firewall-cmd --reload
+       ```
+
+   - **Putty + Xming**
+     - 特点：轻量级组合，Putty负责SSH连接，Xming负责图形界面转发
+     - 适用系统：Windows
+
+   - **VNC Viewer**
+     - 特点：专注于VNC协议，轻量高效
+     - 适用系统：Windows、Mac、Linux
+     - 服务器配置（CentOS为例）：
+       ```bash
+       yum install -y tigervnc-server
+       vncpasswd
+       vncserver :1
+       firewall-cmd --add-port=5901/tcp --permanent
+       firewall-cmd --reload
+       ```
+
+3. **更新系统**：
    ```bash
    yum update -y
    ```
 
-3. **安装Python 3.8**：
+4. **安装Python 3.8**：
    ```bash
    yum install -y python3 python3-pip python3-devel
    ```
 
-4. **安装Git**：
+5. **安装Git**：
    ```bash
    yum install -y git
    ```
 
-5. **安装数据库（可选）**：
+6. **安装数据库（可选）**：
    - SQLite：系统已自带
    - MySQL（推荐）：
      ```bash
