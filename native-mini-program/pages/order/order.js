@@ -20,7 +20,12 @@ Page({
       price: item.price
     }));
     
+    // 获取用户ID（从本地存储中获取）
+    const user = wx.getStorageSync('user');
+    const user_id = user ? user.id : 1; // 默认用户ID为1
+    
     const orderData = {
+      user_id: user_id,
       items: orderItems,
       total_price: this.data.orderTotal
     };

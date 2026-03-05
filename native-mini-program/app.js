@@ -15,7 +15,8 @@ App({
   },
   globalData: {
     userRole: null,
-    baseUrl: 'http://120.53.244.154:5000/api'
+    // baseUrl: 'http://120.53.244.154:5000/api'
+    baseUrl: 'http://10.168.5.20:5000/api'
   },
   // 登录方法
   login(role) {

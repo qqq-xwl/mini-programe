@@ -22,26 +22,26 @@
       {
         "pagePath": "pages/home/home",
         "text": "首页",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "iconPath": "static/img/home.png",
+        "selectedIconPath": "static/img/select-home.png"
       },
       {
         "pagePath": "pages/dishes/dishes",
         "text": "菜品",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "iconPath": "static/img/food.png",
+        "selectedIconPath": "static/img/select-food.png"
       },
       {
         "pagePath": "pages/cart/cart",
         "text": "购物车",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "iconPath": "static/img/order.png",
+        "selectedIconPath": "static/img/select-order.png"
       },
       {
         "pagePath": "pages/mine/mine",
         "text": "我的",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "iconPath": "static/img/mine.png",
+        "selectedIconPath": "static/img/select-mine.png"
       }
     ]
   },
