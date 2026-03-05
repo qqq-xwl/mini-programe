@@ -355,6 +355,73 @@
 - **微信小程序文档**：https://developers.weixin.qq.com/miniprogram/dev/framework/
 - **Flask文档**：https://flask.palletsprojects.com/
 
+## 八、代码更新与部署
+
+### 步骤1：本地代码提交到GitHub
+1. **初始化Git仓库**（如果尚未初始化）：
+   ```bash
+   cd mini-programe
+   git init
+   git add .
+   git commit -m "初始化项目"
+   ```
+
+2. **关联GitHub仓库**：
+   ```bash
+   git remote add origin <GitHub仓库地址>
+   git push -u origin main
+   ```
+
+3. **更新代码后提交**：
+   ```bash
+   git add .
+   git commit -m "更新代码：添加分类重复检查"
+   git push origin main
+   ```
+
+### 步骤2：服务器拉取最新代码
+1. **登录服务器**：
+   ```bash
+   ssh root@服务器IP
+   ```
+
+2. **进入项目目录**：
+   ```bash
+   cd /home/mini-programe
+   ```
+
+3. **拉取最新代码**：
+   ```bash
+   git pull origin main
+   ```
+
+### 步骤3：重启服务使代码生效
+1. **重启Gunicorn服务**：
+   ```bash
+   # 停止服务
+   pkill -f gunicorn
+   
+   # 激活虚拟环境
+   source venv/bin/activate
+   
+   # 重新启动服务
+   gunicorn -w 4 -b 0.0.0.0:5000 app:app --daemon
+   ```
+
+2. **验证服务是否正常运行**：
+   ```bash
+   curl http://localhost:5000/api/categories
+   ```
+
+### 步骤4：常见问题处理
+- **Git拉取冲突**：如果出现冲突，需要手动解决冲突后再提交
+- **依赖更新**：如果更新了依赖，需要重新安装：
+  ```bash
+  source venv/bin/activate
+  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+  ```
+- **数据库迁移**：如果修改了数据库模型，需要重新初始化数据库
+
 ---
 
 本操作手册涵盖了从服务器购买到小程序发布的完整流程，适合初学者和有一定技术基础的开发者使用。根据实际需求，可以适当调整配置和步骤。
