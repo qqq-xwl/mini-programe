@@ -1,5 +1,6 @@
 Page({
   data: {
+    dishId: '',
     dishName: '',
     dishImage: '',
     categories: [],
@@ -8,8 +9,11 @@ Page({
     dishDescription: '',
     dishPrice: ''
   },
-  onLoad() {
+  onLoad(options) {
+    const dishId = options.id;
+    this.setData({ dishId });
     this.fetchCategories();
+    this.fetchDishDetail(dishId);
   },
   fetchCategories() {
     const app = getApp();
@@ -20,12 +24,6 @@ Page({
           this.setData({
             categories: res.data.data
           });
-          if (res.data.data.length > 0) {
-            this.setData({
-              selectedCategory: res.data.data[0],
-              selectedCategoryIndex: 0
-            });
-          }
         } else {
           console.error('获取分类失败:', res.data.msg);
           wx.showToast({
@@ -38,6 +36,47 @@ Page({
         console.error('获取分类失败:', err);
         wx.showToast({
           title: '获取分类失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
+  fetchDishDetail(dishId) {
+    const app = getApp();
+    wx.request({
+      url: app.globalData.baseUrl + '/dishes/' + dishId,
+      success: (res) => {
+        if (res.data.code === 200 && res.data.data) {
+          const dish = res.data.data;
+          this.setData({
+            dishName: dish.name,
+            dishImage: dish.image,
+            dishDescription: dish.description || '',
+            dishPrice: dish.price.toString()
+          });
+          // 找到对应的分类索引
+          const categories = this.data.categories;
+          if (categories.length > 0) {
+            const categoryIndex = categories.findIndex(cat => cat.id === dish.category_id);
+            if (categoryIndex !== -1) {
+              this.setData({
+                selectedCategoryIndex: categoryIndex,
+                selectedCategory: categories[categoryIndex]
+              });
+            }
+          }
+        } else {
+          console.error('获取菜品详情失败:', res.data.msg);
+          wx.showToast({
+            title: '获取菜品详情失败',
+            icon: 'none'
+          });
+        }
+      },
+      fail: (err) => {
+        console.error('获取菜品详情失败:', err);
+        wx.showToast({
+          title: '获取菜品详情失败',
           icon: 'none'
         });
       }
@@ -78,7 +117,7 @@ Page({
     });
   },
   submitDish() {
-    const { dishName, dishImage, selectedCategory, dishDescription, dishPrice } = this.data;
+    const { dishId, dishName, dishImage, selectedCategory, dishDescription, dishPrice } = this.data;
     
     // 验证表单
     if (!dishName) {
@@ -104,8 +143,8 @@ Page({
     // 提交菜品
     const app = getApp();
     wx.request({
-      url: app.globalData.baseUrl + '/dishes',
-      method: 'POST',
+      url: app.globalData.baseUrl + '/dishes/' + dishId,
+      method: 'PUT',
       header: {
         'Authorization': token
       },
@@ -119,7 +158,7 @@ Page({
       success: (res) => {
         if (res.data.code === 200) {
           wx.showToast({
-            title: res.data.msg || '菜品添加成功',
+            title: res.data.msg || '菜品编辑成功',
             icon: 'success'
           });
           // 跳回商家管理页面
@@ -128,15 +167,15 @@ Page({
           }, 1500);
         } else {
           wx.showToast({
-            title: res.data.msg || '菜品添加失败',
+            title: res.data.msg || '菜品编辑失败',
             icon: 'none'
           });
         }
       },
       fail: (err) => {
-        console.error('添加菜品失败:', err);
+        console.error('编辑菜品失败:', err);
         wx.showToast({
-          title: '添加菜品失败',
+          title: '编辑菜品失败',
           icon: 'none'
         });
       }

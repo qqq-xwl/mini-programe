@@ -24,9 +24,13 @@ Page({
     wx.request({
       url: app.globalData.baseUrl + '/categories',
       success: (res) => {
-        this.setData({
-          categories: res.data
-        });
+        if (res.data.code === 200 && res.data.data) {
+          this.setData({
+            categories: res.data.data
+          });
+        } else {
+          console.error('获取分类失败:', res.data.msg);
+        }
       },
       fail: (err) => {
         console.error('获取分类失败:', err);
@@ -38,9 +42,13 @@ Page({
     wx.request({
       url: app.globalData.baseUrl + '/dishes',
       success: (res) => {
-        this.setData({
-          dishes: res.data
-        });
+        if (res.data.code === 200 && res.data.data) {
+          this.setData({
+            dishes: res.data.data
+          });
+        } else {
+          console.error('获取菜品失败:', res.data.msg);
+        }
       },
       fail: (err) => {
         console.error('获取菜品失败:', err);
@@ -74,14 +82,21 @@ Page({
       },
       data: { name: name },
       success: (res) => {
-        wx.showToast({
-          title: '分类添加成功',
-          icon: 'success'
-        });
-        this.setData({
-          newCategoryName: ''
-        });
-        this.fetchCategories();
+        if (res.data.code === 200) {
+          wx.showToast({
+            title: res.data.msg || '分类添加成功',
+            icon: 'success'
+          });
+          this.setData({
+            newCategoryName: ''
+          });
+          this.fetchCategories();
+        } else {
+          wx.showToast({
+            title: res.data.msg || '分类添加失败',
+            icon: 'none'
+          });
+        }
       },
       fail: (err) => {
         console.error('添加分类失败:', err);
@@ -116,11 +131,18 @@ Page({
               },
               data: { name: newName },
               success: (res) => {
-                wx.showToast({
-                  title: '分类编辑成功',
-                  icon: 'success'
-                });
-                this.fetchCategories();
+                if (res.data.code === 200) {
+                  wx.showToast({
+                    title: res.data.msg || '分类编辑成功',
+                    icon: 'success'
+                  });
+                  this.fetchCategories();
+                } else {
+                  wx.showToast({
+                    title: res.data.msg || '分类编辑失败',
+                    icon: 'none'
+                  });
+                }
               },
               fail: (err) => {
                 console.error('编辑分类失败:', err);
@@ -154,11 +176,18 @@ Page({
               'Authorization': token
             },
             success: (res) => {
-              wx.showToast({
-                title: '分类删除成功',
-                icon: 'success'
-              });
-              this.fetchCategories();
+              if (res.data.code === 200) {
+                wx.showToast({
+                  title: res.data.msg || '分类删除成功',
+                  icon: 'success'
+                });
+                this.fetchCategories();
+              } else {
+                wx.showToast({
+                  title: res.data.msg || '分类删除失败',
+                  icon: 'none'
+                });
+              }
             },
             fail: (err) => {
               console.error('删除分类失败:', err);
@@ -179,11 +208,10 @@ Page({
     });
   },
   editDish(e) {
-    const id = e.currentTarget.dataset.id;
-    // 这里可以实现编辑菜品的功能，打开一个新页面或弹窗
-    wx.showToast({
-      title: '编辑菜品功能开发中',
-      icon: 'none'
+    const dish = e.currentTarget.dataset.dish;
+    // 跳转到编辑菜品页面
+    wx.navigateTo({
+      url: `/pages/edit-dish/edit-dish?id=${dish.id}`
     });
   },
   deleteDish(e) {
@@ -199,11 +227,18 @@ Page({
             url: `${app.globalData.baseUrl}/dishes/${id}`,
             method: 'DELETE',
             success: (res) => {
-              wx.showToast({
-                title: '菜品删除成功',
-                icon: 'success'
-              });
-              this.fetchDishes();
+              if (res.data.code === 200) {
+                wx.showToast({
+                  title: res.data.msg || '菜品删除成功',
+                  icon: 'success'
+                });
+                this.fetchDishes();
+              } else {
+                wx.showToast({
+                  title: res.data.msg || '菜品删除失败',
+                  icon: 'none'
+                });
+              }
             },
             fail: (err) => {
               console.error('删除菜品失败:', err);

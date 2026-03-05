@@ -8,7 +8,8 @@
     "pages/order/order",
     "pages/mine/mine",
     "pages/merchant/merchant",
-    "pages/add-dish/add-dish"
+    "pages/add-dish/add-dish",
+    "pages/edit-dish/edit-dish"
   ],
   "window": {
     "backgroundTextStyle": "light",

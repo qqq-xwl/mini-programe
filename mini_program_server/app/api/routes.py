@@ -126,6 +126,22 @@ def get_dishes():
     } for d in dishes]
     return success_response(data, "获取菜品成功")
 
+@app.route('/api/dishes/<int:id>', methods=['GET'], endpoint='get_dish')
+def get_dish(id):
+    dish = Dish.query.get(id)
+    if not dish:
+        return error_response(404, "菜品不存在")
+    
+    data = {
+        'id': dish.id,
+        'name': dish.name,
+        'price': dish.price,
+        'description': dish.description,
+        'image': dish.image,
+        'category_id': dish.category_id
+    }
+    return success_response(data, "获取菜品详情成功")
+
 @app.route('/api/dishes', methods=['POST'], endpoint='add_dish')
 @requires_role('merchant')
 def add_dish():
@@ -147,6 +163,31 @@ def add_dish():
     db.session.add(dish)
     db.session.commit()
     return success_response({'id': dish.id, 'name': dish.name}, "菜品添加成功")
+
+@app.route('/api/dishes/<int:id>', methods=['PUT'], endpoint='update_dish')
+@requires_role('merchant')
+def update_dish(id):
+    dish = Dish.query.get(id)
+    if not dish:
+        return error_response(404, "菜品不存在")
+    
+    data = request.get_json()
+    name = data.get('name')
+    price = data.get('price')
+    category_id = data.get('category_id')
+    
+    if not name or not price or not category_id:
+        return error_response(400, "菜品名称、价格和分类不能为空")
+    
+    # 更新菜品信息
+    dish.name = name
+    dish.price = price
+    dish.description = data.get('description')
+    dish.image = data.get('image')
+    dish.category_id = category_id
+    
+    db.session.commit()
+    return success_response({'id': dish.id, 'name': dish.name}, "菜品编辑成功")
 
 @app.route('/api/dishes/<int:id>', methods=['DELETE'], endpoint='delete_dish')
 @requires_role('merchant')

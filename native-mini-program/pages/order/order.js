@@ -32,23 +32,30 @@ Page({
       method: 'POST',
       data: orderData,
       success: (res) => {
-        // 订单提交成功
-        wx.showToast({
-          title: '订单提交成功',
-          icon: 'success'
-        });
-        
-        // 清空购物车
-        wx.removeStorageSync('cart');
-        wx.removeStorageSync('orderCart');
-        wx.removeStorageSync('orderTotal');
-        
-        // 跳转到我的页面
-        setTimeout(() => {
-          wx.switchTab({
-            url: '/pages/mine/mine'
+        if (res.data.code === 200) {
+          // 订单提交成功
+          wx.showToast({
+            title: res.data.msg || '订单提交成功',
+            icon: 'success'
           });
-        }, 1500);
+          
+          // 清空购物车
+          wx.removeStorageSync('cart');
+          wx.removeStorageSync('orderCart');
+          wx.removeStorageSync('orderTotal');
+          
+          // 跳转到我的页面
+          setTimeout(() => {
+            wx.switchTab({
+              url: '/pages/mine/mine'
+            });
+          }, 1500);
+        } else {
+          wx.showToast({
+            title: res.data.msg || '订单提交失败',
+            icon: 'none'
+          });
+        }
       },
       fail: (err) => {
         console.error('提交订单失败:', err);

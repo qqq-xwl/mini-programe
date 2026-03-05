@@ -1,0 +1,66 @@
+<view class="add-dish">
+  <view class="page-title">编辑菜品</view>
+  
+  <view class="form-item">
+    <text class="label">菜品名称</text>
+    <input 
+      class="input" 
+      placeholder="请输入菜品名称" 
+      bindinput="inputDishName"
+      value="{{ dishName }}"
+    />
+  </view>
+  
+  <view class="form-item">
+    <text class="label">菜品图片</text>
+    <view class="image-upload">
+      <image 
+        class="dish-image" 
+        src="{{ dishImage || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=delicious%20food%20dish&image_size=square' }}" 
+        mode="aspectFill"
+      />
+      <button class="upload-btn" bindtap="chooseImage">选择图片</button>
+    </view>
+  </view>
+  
+  <view class="form-item">
+    <text class="label">所属分类</text>
+    <picker 
+      class="picker" 
+      range="{{ categories }}" 
+      range-key="name"
+      value="{{ selectedCategoryIndex }}"
+      bindchange="selectCategory"
+    >
+      <view class="picker-text">
+        {{ selectedCategory ? selectedCategory.name : '请选择分类' }}
+      </view>
+    </picker>
+  </view>
+  
+  <view class="form-item">
+    <text class="label">菜品描述</text>
+    <textarea 
+      class="textarea" 
+      placeholder="请输入菜品描述" 
+      bindinput="inputDishDescription"
+      value="{{ dishDescription }}"
+    />
+  </view>
+  
+  <view class="form-item">
+    <text class="label">菜品价格</text>
+    <input 
+      class="input" 
+      type="number" 
+      placeholder="请输入菜品价格" 
+      bindinput="inputDishPrice"
+      value="{{ dishPrice }}"
+    />
+  </view>
+  
+  <view class="button-group">
+    <button class="cancel-btn" bindtap="cancel">取消</button>
+    <button class="submit-btn" bindtap="submitDish">保存</button>
+  </view>
+</view>

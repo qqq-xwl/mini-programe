@@ -19,9 +19,13 @@ Page({
     wx.request({
       url: app.globalData.baseUrl + '/categories',
       success: (res) => {
-        this.setData({
-          categories: res.data
-        });
+        if (res.data.code === 200 && res.data.data) {
+          this.setData({
+            categories: res.data.data
+          });
+        } else {
+          console.error('获取分类失败:', res.data.msg);
+        }
       },
       fail: (err) => {
         console.error('获取分类失败:', err);
@@ -38,9 +42,13 @@ Page({
     wx.request({
       url: url,
       success: (res) => {
-        this.setData({
-          dishes: res.data
-        });
+        if (res.data.code === 200 && res.data.data) {
+          this.setData({
+            dishes: res.data.data
+          });
+        } else {
+          console.error('获取菜品失败:', res.data.msg);
+        }
       },
       fail: (err) => {
         console.error('获取菜品失败:', err);

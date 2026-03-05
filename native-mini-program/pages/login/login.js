@@ -29,17 +29,17 @@ Page({
           role: role
         },
         success: (res) => {
-          if (res.data.id) {
+          if (res.data.code === 200 && res.data.data) {
             // 保存用户信息和token到本地存储
-            wx.setStorageSync('user', res.data);
-            wx.setStorageSync('token', res.data.token);
+            wx.setStorageSync('user', res.data.data);
+            wx.setStorageSync('token', res.data.data.token);
             // 使用app.js中的登录方法
             const app = getApp();
             app.login(role);
             // 跳转到首页
             wx.switchTab({ url: '/pages/home/home' });
           } else {
-            wx.showToast({ title: '登录失败', icon: 'none' });
+            wx.showToast({ title: res.data.msg || '登录失败', icon: 'none' });
           }
         },
         fail: (err) => {

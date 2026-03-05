@@ -12,9 +12,13 @@ Page({
     wx.request({
       url: `${app.globalData.baseUrl}/dishes/${dishId}`,
       success: (res) => {
-        this.setData({
-          dish: res.data
-        });
+        if (res.data.code === 200 && res.data.data) {
+          this.setData({
+            dish: res.data.data
+          });
+        } else {
+          console.error('获取菜品详情失败:', res.data.msg);
+        }
       },
       fail: (err) => {
         console.error('获取菜品详情失败:', err);
