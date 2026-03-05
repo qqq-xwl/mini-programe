@@ -1,0 +1,43 @@
+<view class="add-dish">
+  <view class="form-item">
+    <text class="label">菜品名称</text>
+    <input class="input" placeholder="请输入菜品名称" bindinput="inputDishName" value="{{ dishName }}"/>
+  </view>
+  
+  <view class="form-item">
+    <text class="label">菜品图片</text>
+    <view class="image-upload">
+      <view class="upload-area" bindtap="chooseImage">
+        <image wx:if="{{ dishImage }}" src="{{ dishImage }}" mode="aspectFill" class="preview-image"/>
+        <view wx:else class="upload-placeholder">
+          <text class="upload-icon">📷</text>
+          <text class="upload-text">点击上传图片</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <view class="form-item">
+    <text class="label">所属分类</text>
+    <picker class="picker" range="{{ categories }}" range-key="name" value="{{ selectedCategoryIndex }}" bindchange="selectCategory">
+      <view class="picker-text">
+        {{ selectedCategory ? selectedCategory.name : '请选择分类' }}
+      </view>
+    </picker>
+  </view>
+  
+  <view class="form-item">
+    <text class="label">菜品描述</text>
+    <textarea class="textarea" placeholder="请输入菜品描述" bindinput="inputDishDescription" value="{{ dishDescription }}"/>
+  </view>
+  
+  <view class="form-item">
+    <text class="label">菜品价格</text>
+    <input class="input" type="number" placeholder="请输入菜品价格" bindinput="inputDishPrice" value="{{ dishPrice }}"/>
+  </view>
+  
+  <view class="form-actions">
+    <button class="submit-btn" bindtap="submitDish">提交</button>
+    <button class="cancel-btn" bindtap="cancel">取消</button>
+  </view>
+</view>

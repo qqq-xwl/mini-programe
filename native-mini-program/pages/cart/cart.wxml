@@ -1,0 +1,40 @@
+<view class="cart">
+  <view wx:if="{{ cart.length === 0 }}" class="empty-cart">
+    <text class="empty-icon">🛒</text>
+    <text class="empty-text">购物车是空的</text>
+    <navigator url="/pages/home/home" class="go-shopping">去购物</navigator>
+  </view>
+  <view wx:else class="cart-list">
+    <view 
+      wx:for="{{ cart }}" 
+      wx:key="{{ item.id }}"
+      class="cart-item"
+    >
+      <view class="item-image">
+        <image 
+          src="{{ item.image || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=delicious%20food%20dish&image_size=square' }}" 
+          mode="aspectFill"
+        />
+      </view>
+      <view class="item-info">
+        <text class="item-name">{{ item.name }}</text>
+        <view class="item-price-quantity">
+          <text class="item-price">¥{{ item.price.toFixed(2) }}</text>
+          <view class="quantity-buttons">
+            <button class="quantity-btn" bindtap="decreaseQuantity" data-index="{{ index }}" disabled="{{ item.quantity <= 1 }}">-</button>
+            <text class="quantity">{{ item.quantity }}</text>
+            <button class="quantity-btn" bindtap="increaseQuantity" data-index="{{ index }}">+</button>
+          </view>
+        </view>
+      </view>
+      <button class="delete-btn" bindtap="deleteItem" data-index="{{ index }}">删除</button>
+    </view>
+  </view>
+  <view wx:if="{{ cart.length > 0 }}" class="cart-footer">
+    <view class="total">
+      <text>合计：</text>
+      <text class="total-price">¥{{ totalPrice.toFixed(2) }}</text>
+    </view>
+    <button class="checkout-btn" bindtap="goToOrder">去结算</button>
+  </view>
+</view>

@@ -1,0 +1,31 @@
+<view class="order">
+  <view class="order-items">
+    <h2>订单商品</h2>
+    <view 
+      wx:for="{{ orderCart }}" 
+      wx:key="{{ item.id }}"
+      class="order-item"
+    >
+      <view class="item-image">
+        <image 
+          src="{{ item.image || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=delicious%20food%20dish&image_size=square' }}" 
+          mode="aspectFill"
+        />
+      </view>
+      <view class="item-info">
+        <text class="item-name">{{ item.name }}</text>
+        <view class="item-price-quantity">
+          <text class="item-price">¥{{ item.price.toFixed(2) }}</text>
+          <text class="item-quantity">x{{ item.quantity }}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="order-total">
+    <text>合计：</text>
+    <text class="total-price">¥{{ orderTotal.toFixed(2) }}</text>
+  </view>
+  <view class="order-actions">
+    <button class="submit-btn" bindtap="submitOrder">提交订单</button>
+  </view>
+</view>

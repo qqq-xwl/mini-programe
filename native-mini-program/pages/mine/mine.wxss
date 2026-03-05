@@ -1,0 +1,133 @@
+.mine {
+  padding-bottom: 60px;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.avatar-icon {
+  font-size: 40px;
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.user-role {
+  font-size: 14px;
+  color: #666;
+}
+
+.menu-list {
+  background-color: #fff;
+  margin-bottom: 10px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-icon {
+  font-size: 20px;
+  margin-right: 15px;
+}
+
+.menu-text {
+  flex: 1;
+  font-size: 16px;
+  color: #333;
+}
+
+.menu-arrow {
+  font-size: 14px;
+  color: #999;
+}
+
+.order-list {
+  background-color: #fff;
+  padding: 20px;
+}
+
+.order-list h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.no-orders {
+  text-align: center;
+  padding: 20px;
+  color: #999;
+}
+
+.order-item {
+  padding: 15px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.order-id {
+  font-size: 14px;
+  color: #333;
+}
+
+.order-status {
+  font-size: 14px;
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.order-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-amount {
+  font-size: 14px;
+  color: #333;
+}
+
+.order-time {
+  font-size: 12px;
+  color: #999;
+}

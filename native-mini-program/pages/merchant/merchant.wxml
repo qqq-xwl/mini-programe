@@ -1,0 +1,75 @@
+<view class="merchant">
+  <view class="tab-bar">
+    <view 
+      class="tab-item" 
+      class="{{ activeTab === 'categories' ? 'active' : '' }}"
+      bindtap="switchTab"
+      data-tab="categories"
+    >
+      <text>分类管理</text>
+    </view>
+    <view 
+      class="tab-item" 
+      class="{{ activeTab === 'dishes' ? 'active' : '' }}"
+      bindtap="switchTab"
+      data-tab="dishes"
+    >
+      <text>菜品管理</text>
+    </view>
+  </view>
+  
+  <!-- 分类管理 -->
+  <view wx:if="{{ activeTab === 'categories' }}" class="category-management">
+    <view class="add-category">
+      <input 
+        class="category-input" 
+        placeholder="输入分类名称" 
+        bindinput="inputCategoryName"
+        value="{{ newCategoryName }}"
+      />
+      <button class="add-btn" bindtap="addCategory">添加分类</button>
+    </view>
+    <view class="category-list">
+      <view 
+        wx:for="{{ categories }}" 
+        wx:key="{{ item.id }}"
+        class="category-item"
+      >
+        <text class="category-name">{{ item.name }}</text>
+        <view class="category-actions">
+          <button class="edit-btn" bindtap="editCategory" data-id="{{ item.id }}" data-name="{{ item.name }}">编辑</button>
+          <button class="delete-btn" bindtap="deleteCategory" data-id="{{ item.id }}">删除</button>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 菜品管理 -->
+  <view wx:if="{{ activeTab === 'dishes' }}" class="dish-management">
+    <view class="add-dish">
+      <button class="add-btn" bindtap="addDish">添加菜品</button>
+    </view>
+    <view class="dish-list">
+      <view 
+        wx:for="{{ dishes }}" 
+        wx:key="{{ item.id }}"
+        class="dish-item"
+      >
+        <view class="dish-image">
+          <image 
+            src="{{ item.image || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=delicious%20food%20dish&image_size=square' }}" 
+            mode="aspectFill"
+          />
+        </view>
+        <view class="dish-info">
+          <text class="dish-name">{{ item.name }}</text>
+          <text class="dish-price">¥{{ item.price.toFixed(2) }}</text>
+        </view>
+        <view class="dish-actions">
+          <button class="edit-btn" bindtap="editDish" data-id="{{ item.id }}">编辑</button>
+          <button class="delete-btn" bindtap="deleteDish" data-id="{{ item.id }}">删除</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

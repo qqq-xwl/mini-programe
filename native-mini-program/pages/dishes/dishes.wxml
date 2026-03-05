@@ -1,0 +1,36 @@
+<view class="dishes">
+  <view class="category-filter">
+    <scroll-view scroll-x="true" class="category-scroll">
+      <view 
+        wx:for="{{ categories }}" 
+        wx:key="{{ item.id }}"
+        class="category-item"
+        class="{{ selectedCategory === item.id ? 'active' : '' }}"
+        bindtap="selectCategory"
+        data-id="{{ item.id }}"
+      >
+        <text>{{ item.name }}</text>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="dish-list">
+    <view 
+      wx:for="{{ dishes }}" 
+      wx:key="{{ item.id }}"
+      class="dish-item"
+      bindtap="goToDishDetail"
+      data-id="{{ item.id }}"
+    >
+      <view class="dish-image">
+        <image 
+          src="{{ item.image || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=delicious%20food%20dish&image_size=square' }}" 
+          mode="aspectFill"
+        />
+      </view>
+      <view class="dish-info">
+        <h3>{{ item.name }}</h3>
+        <p class="dish-price">¥{{ item.price.toFixed(2) }}</p>
+      </view>
+    </view>
+  </view>
+</view>

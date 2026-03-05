@@ -1,0 +1,24 @@
+<view class="dish-detail">
+  <view class="dish-image">
+    <image 
+      src="{{ dish.image || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=delicious%20food%20dish&image_size=landscape_16_9' }}" 
+      mode="aspectFill"
+    />
+  </view>
+  <view class="dish-info">
+    <h2>{{ dish.name }}</h2>
+    <p class="dish-price">¥{{ dish.price.toFixed(2) }}</p>
+    <p class="dish-description">{{ dish.description || '暂无描述' }}</p>
+  </view>
+  <view class="quantity-control">
+    <text class="quantity-label">数量</text>
+    <view class="quantity-buttons">
+      <button class="quantity-btn" bindtap="decreaseQuantity" disabled="{{ quantity <= 1 }}">-</button>
+      <text class="quantity">{{ quantity }}</text>
+      <button class="quantity-btn" bindtap="increaseQuantity">+</button>
+    </view>
+  </view>
+  <view class="add-to-cart">
+    <button class="add-btn" bindtap="addToCart">加入购物车</button>
+  </view>
+</view>

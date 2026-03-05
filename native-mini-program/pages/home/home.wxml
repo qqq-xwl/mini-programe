@@ -1,0 +1,32 @@
+<view class="home">
+  <view class="banner">
+    <image src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=restaurant%20banner%20with%20delicious%20food&image_size=landscape_16_9" mode="aspectFill"></image>
+  </view>
+  <view class="categories">
+    <text class="section-title">菜品分类</text>
+    <view class="category-list">
+      <view wx:for="{{ categories }}" wx:key="id" class="category-item">
+        <navigator url="/pages/dishes/dishes?category_id={{ item.id }}">
+          <view class="category-icon">{{ getCategoryIcon(item.id) }}</view>
+          <text class="category-name">{{ item.name }}</text>
+        </navigator>
+      </view>
+    </view>
+  </view>
+  <view class="recommended">
+    <text class="section-title">推荐菜品</text>
+    <view class="dish-list">
+      <view wx:for="{{ recommendedDishes }}" wx:key="id" class="dish-item">
+        <navigator url="/pages/dish-detail/dish-detail?id={{ item.id }}">
+          <view class="dish-image">
+            <image src="{{ item.image || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=delicious%20food%20dish&image_size=square' }}" mode="aspectFill"></image>
+          </view>
+          <view class="dish-info">
+            <text class="dish-name">{{ item.name }}</text>
+            <text class="dish-price">¥{{ item.price.toFixed(2) }}</text>
+          </view>
+        </navigator>
+      </view>
+    </view>
+  </view>
+</view>
